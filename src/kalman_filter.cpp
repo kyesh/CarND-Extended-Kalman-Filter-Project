@@ -1,7 +1,9 @@
 #include "kalman_filter.h"
+#include <iostream>
 
 using Eigen::MatrixXd;
 using Eigen::VectorXd;
+using namespace std;
 
 // Please note that the Eigen library does not initialize 
 // VectorXd or MatrixXd objects with zeros upon creation.
@@ -24,8 +26,11 @@ void KalmanFilter::Predict() {
   /**
     * predict the state
   */
+	cout << "Line1" << endl;
 	x_ = F_ * x_;
+	cout << "Line2" << endl;
 	MatrixXd Ft = F_.transpose();
+	cout << "Line3" << endl;
 	P_ = F_ * P_ * Ft + Q_;
 }
 
