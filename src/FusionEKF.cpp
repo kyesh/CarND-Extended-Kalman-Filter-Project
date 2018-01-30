@@ -48,8 +48,8 @@ FusionEKF::FusionEKF() {
 
 	ekf_.P_ << 1, 0, 0, 0,
 		  0, 1, 0, 0,
-		  0, 0, 1000, 0,
-		  0, 0, 0, 1000;
+		  0, 0, 100000000, 0,
+		  0, 0, 0, 100000000;
 
 
 
@@ -107,9 +107,9 @@ FusionEKF::~FusionEKF() {}
 
 void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
 
-        float noise_ax = 5;
+        float noise_ax = 17;
 
-        float noise_ay = 5;
+        float noise_ay = 17;
 
 
   /*****************************************************************************
@@ -157,7 +157,6 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
 
 
 
-		previous_timestamp_ = measurement_pack.timestamp_;
 
 
 
@@ -165,6 +164,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
 
     // done initializing, no need to predict or update
     is_initialized_ = true;
+	previous_timestamp_ = measurement_pack.timestamp_;
 	cout << "EKF Initilized" << endl;
     return;
   }
@@ -238,7 +238,7 @@ cout << "Start Update" << endl;
         ekf_.H_ = Hj_;
         ekf_.R_ = R_radar_;
 
-	ekf_.UpdateEKF(measurement_pack.raw_measurements_);
+	//ekf_.UpdateEKF(measurement_pack.raw_measurements_);
   } else {
     // Laser updates
 	cout << "Laser!" << endl;

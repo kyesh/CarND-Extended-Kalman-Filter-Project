@@ -58,7 +58,7 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
   TODO:
     * update the state by using Extended Kalman Filter equations
   */
-        VectorXd z_pred = H_ * x_;
+        VectorXd z_pred = ToPolar(x_);
         VectorXd y = z - z_pred;
         MatrixXd Ht = H_.transpose();
         MatrixXd S = H_ * P_ * Ht + R_;
@@ -72,4 +72,27 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
         MatrixXd I = MatrixXd::Identity(x_size, x_size);
         P_ = (I - K * H_) * P_;
 
+}
+
+VectorXd KalmanFilter::ToPolar(const VectorXd& x_state){
+
+    VectorXd h_x(3,1);
+    h_x << 1,0,0;
+    
+    
+    float px = x_state(0);
+    float py = x_state(1);
+    float vx = x_state(2);
+    float vy = x_state(3);
+    float c1 = sqrt(px*px+py*py);
+    
+    if ((fabs(px) < 0.0001)||(fabs(c1) < 0.0001)){
+        cout << "ToPolar Error - Division by zero" << endl;
+        return h_x;
+    }
+    else {
+        h_x << c1, atan2(py, px), (vx*px+vy*py)/c1;
+    }
+    
+    return h_x;
 }
