@@ -26,11 +26,11 @@ void KalmanFilter::Predict() {
   /**
     * predict the state
   */
-	cout << "Line1" << endl;
+	//cout << "Line1" << endl;
 	x_ = F_ * x_;
-	cout << "Line2" << endl;
+	//cout << "Line2" << endl;
 	MatrixXd Ft = F_.transpose();
-	cout << "Line3" << endl;
+	//cout << "Line3" << endl;
 	P_ = F_ * P_ * Ft + Q_;
 }
 
@@ -60,6 +60,8 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
   */
         VectorXd z_pred = ToPolar(x_);
         VectorXd y = z - z_pred;
+	while (y(1)>M_PI) y(1)-=2.*M_PI;
+	while (y(1)<-M_PI) y(1)+=2.*M_PI;
         MatrixXd Ht = H_.transpose();
         MatrixXd S = H_ * P_ * Ht + R_;
         MatrixXd Si = S.inverse();
