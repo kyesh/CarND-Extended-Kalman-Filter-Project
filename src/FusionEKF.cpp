@@ -107,9 +107,9 @@ FusionEKF::~FusionEKF() {}
 
 void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
 
-        float noise_ax = 29;
+        float noise_ax = 9;
 
-        float noise_ay = 29;
+        float noise_ay = 9;
 
 
   /*****************************************************************************
@@ -238,7 +238,7 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
         ekf_.H_ = Hj_;
         ekf_.R_ = R_radar_;
 
-	//ekf_.UpdateEKF(measurement_pack.raw_measurements_);
+	ekf_.UpdateEKF(measurement_pack.raw_measurements_);
   } else {
     // Laser updates
 	//cout << "Laser!" << endl;
